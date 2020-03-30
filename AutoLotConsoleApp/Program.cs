@@ -30,7 +30,8 @@ namespace AutoLotConsoleApp
             //PrintBMWs();
             //FunWithLinqQueries();
             //FindCar5();
-            ChainingLinqQueries();
+            //ChainingLinqQueries();
+            GetAllCarOrdersLazy();
             ReadLine();
         }
         private static int AddNewRecord()
@@ -140,5 +141,20 @@ namespace AutoLotConsoleApp
                 }
             }
         }
+        private static void GetAllCarOrdersLazy()
+        {
+            // This code is not performant: it initially loads proxies for the order class' then calls a separate sql query for each car's order element.
+            using (var context = new AutoLotEntities())
+            {
+                foreach (Car c in context.Cars)
+                {
+                    foreach (Order o in c.Orders)
+                    {
+                        WriteLine(o.OrderId);
+                    }
+                }
+            }
+        }
+
     }
 }
