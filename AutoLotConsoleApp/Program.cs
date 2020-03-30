@@ -17,13 +17,15 @@ namespace AutoLotConsoleApp
             //WriteLine(carId);
             //ReadLine();
 
-            List<Car> familyCars = new List<Car>()
-            {
-                {new Car {Make = "Lexus", Color = "Black", CarNickName = "Moms Hot Rod" } },
-                {new Car {Make = "Dodge", Color = "Grey", CarNickName = "Big 'ol Truck" } },
-                {new Car {Make = "Toyota", Color = "Blue", CarNickName = "Betty" } }
-            };
-            AddNewRecords(familyCars);
+            //List<Car> familyCars = new List<Car>()
+            //{
+            //    {new Car {Make = "Lexus", Color = "Black", CarNickName = "Moms Hot Rod" } },
+            //    {new Car {Make = "Dodge", Color = "Grey", CarNickName = "Big 'ol Truck" } },
+            //    {new Car {Make = "Toyota", Color = "Blue", CarNickName = "Betty" } }
+            //};
+            //AddNewRecords(familyCars);
+            PrintAllInventory();
+            ReadLine();
         }
         private static int AddNewRecord()
         {
@@ -52,6 +54,18 @@ namespace AutoLotConsoleApp
             {
                 context.Cars.AddRange(carsToAdd);
                 context.SaveChanges();
+            }
+        }
+        private static void PrintAllInventory()
+        {
+            // Select all items from the inventory table of Autolot, 
+            // and print out the data using our custom ToString() of the Car entity class.
+            using (var context = new AutoLotEntities())
+            {
+                foreach (Car c in context.Cars)
+                {
+                    WriteLine(c);
+                }
             }
         }
     }
