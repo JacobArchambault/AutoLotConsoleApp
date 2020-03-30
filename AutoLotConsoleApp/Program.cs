@@ -26,7 +26,8 @@ namespace AutoLotConsoleApp
             //};
             //AddNewRecords(familyCars);
             //PrintAllInventory();
-            PrintShortCarRecord();
+            //PrintBMWs();
+            FunWithLinqQueries();
             ReadLine();
         }
         private static int AddNewRecord()
@@ -78,9 +79,39 @@ namespace AutoLotConsoleApp
                 {
                     WriteLine(c);
                 }
-
             }
 
+        }
+        private static void PrintBMWs()
+        {
+            // Select all BMWs from the inventory table of Autolot, 
+            // and print out the data using our custom ToString() of the Car entity class.
+            using (var context = new AutoLotEntities())
+            {
+                foreach (Car c in context.Cars.Where(c => c.Make == "BMW"))
+                {
+                    WriteLine(c);
+                }
+            }
+        }
+        private static void FunWithLinqQueries()
+        {
+            using (var context = new AutoLotEntities())
+            {
+                // Get a projection of new data.
+                var colorsMakes = from item in context.Cars select new { item.Color, item.Make };
+                foreach (var item in colorsMakes)
+                {
+                    WriteLine(item);
+                }
+
+                // Get only Black cars.
+                var blackCars = from item in context.Cars where item.Color == "Black" select item;
+                foreach (var item in blackCars)
+                {
+                    WriteLine(item);
+                }
+            }
         }
     }
 }
