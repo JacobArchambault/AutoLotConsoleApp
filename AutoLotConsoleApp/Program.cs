@@ -27,7 +27,8 @@ namespace AutoLotConsoleApp
             //AddNewRecords(familyCars);
             //PrintAllInventory();
             //PrintBMWs();
-            FunWithLinqQueries();
+            //FunWithLinqQueries();
+            FindCar5();
             ReadLine();
         }
         private static int AddNewRecord()
@@ -111,6 +112,13 @@ namespace AutoLotConsoleApp
                 {
                     WriteLine(item);
                 }
+            }
+        }
+        private static void FindCar5()
+        {
+            using (var context = new AutoLotEntities())
+            {
+                WriteLine(context.Cars.Find(5));
             }
         }
     }
