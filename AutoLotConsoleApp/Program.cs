@@ -2,6 +2,7 @@
 using AutoLotConsoleApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,8 @@ namespace AutoLotConsoleApp
             //PrintAllInventory();
             //PrintBMWs();
             //FunWithLinqQueries();
-            FindCar5();
+            //FindCar5();
+            ChainingLinqQueries();
             ReadLine();
         }
         private static int AddNewRecord()
@@ -119,6 +121,23 @@ namespace AutoLotConsoleApp
             using (var context = new AutoLotEntities())
             {
                 WriteLine(context.Cars.Find(5));
+            }
+        }
+        private static void ChainingLinqQueries()
+        {
+            using (var context = new AutoLotEntities())
+            {
+                // Not executed
+                DbSet<Car> allData = context.Cars;
+
+                // Not executed.
+                var colorsMakes = from item in allData select new { item.Color, item.Make };
+
+                // Now it's executed
+                foreach (var item in colorsMakes)
+                {
+                    WriteLine(item);
+                }
             }
         }
     }
