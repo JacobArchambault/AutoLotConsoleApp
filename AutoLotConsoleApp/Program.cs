@@ -32,7 +32,8 @@ namespace AutoLotConsoleApp
             //FindCar5();
             //ChainingLinqQueries();
             //GetAllCarOrdersLazy();
-            GetAllCarOrdersEager();
+            //GetAllCarOrdersEager();
+            GetAllCarOrdersExplicit();
             ReadLine();
         }
         private static int AddNewRecord()
@@ -170,6 +171,26 @@ namespace AutoLotConsoleApp
                 }
             }
         }
+        private static void GetAllCarOrdersExplicit()
+        {
+            using (var context = new AutoLotEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                foreach (Car c in context.Cars)
+                {
+                    context.Entry(c).Collection(x => x.Orders).Load();
+                    foreach (Order o in c.Orders)
+                    {
+                        WriteLine(o.OrderId);
+                    }
+                }
+                foreach (Order o in context.Orders)
+                {
+                    context.Entry(o).Reference(x => x.Car).Load();
+                }
+            }
+        }
+
 
     }
 }
