@@ -31,7 +31,8 @@ namespace AutoLotConsoleApp
             //FunWithLinqQueries();
             //FindCar5();
             //ChainingLinqQueries();
-            GetAllCarOrdersLazy();
+            //GetAllCarOrdersLazy();
+            GetAllCarOrdersEager();
             ReadLine();
         }
         private static int AddNewRecord()
@@ -147,6 +148,20 @@ namespace AutoLotConsoleApp
             using (var context = new AutoLotEntities())
             {
                 foreach (Car c in context.Cars)
+                {
+                    foreach (Order o in c.Orders)
+                    {
+                        WriteLine(o.OrderId);
+                    }
+                }
+            }
+        }
+        private static void GetAllCarOrdersEager()
+        {
+            // An eager loading version of GetAllCarOrdersLazy. Instead of loading proxies for linked Order data, it loads the Order data when it gets the car classes.
+            using (var context = new AutoLotEntities())
+            {
+                foreach (Car c in context.Cars.Include(c => c.Orders))
                 {
                     foreach (Order o in c.Orders)
                     {
