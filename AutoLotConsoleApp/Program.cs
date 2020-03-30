@@ -13,9 +13,17 @@ namespace AutoLotConsoleApp
         static void Main()
         {
             WriteLine("***** Fun with ADO.NET EF *****\n");
-            int carId = AddNewRecord();
-            WriteLine(carId);
-            ReadLine();
+            //int carId = AddNewRecord();
+            //WriteLine(carId);
+            //ReadLine();
+
+            List<Car> familyCars = new List<Car>()
+            {
+                {new Car {Make = "Lexus", Color = "Black", CarNickName = "Moms Hot Rod" } },
+                {new Car {Make = "Dodge", Color = "Grey", CarNickName = "Big 'ol Truck" } },
+                {new Car {Make = "Toyota", Color = "Blue", CarNickName = "Betty" } }
+            };
+            AddNewRecords(familyCars);
         }
         private static int AddNewRecord()
         {
@@ -36,6 +44,14 @@ namespace AutoLotConsoleApp
                     WriteLine(ex.InnerException?.Message);
                     return 0;
                 }
+            }
+        }
+        private static void AddNewRecords(IEnumerable<Car> carsToAdd)
+        {
+            using (var context = new AutoLotEntities())
+            {
+                context.Cars.AddRange(carsToAdd);
+                context.SaveChanges();
             }
         }
     }
