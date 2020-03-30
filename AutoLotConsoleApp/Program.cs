@@ -1,4 +1,5 @@
 ﻿using AutoLotConsoleApp.EF;
+using AutoLotConsoleApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace AutoLotConsoleApp
             //    {new Car {Make = "Toyota", Color = "Blue", CarNickName = "Betty" } }
             //};
             //AddNewRecords(familyCars);
-            PrintAllInventory();
+            //PrintAllInventory();
+            PrintShortCarRecord();
             ReadLine();
         }
         private static int AddNewRecord()
@@ -67,6 +69,18 @@ namespace AutoLotConsoleApp
                     WriteLine(c);
                 }
             }
+        }
+        private static void PrintShortCarRecord()
+        {
+            using (var context = new AutoLotEntities())
+            {
+                foreach (ShortCar c in context.Database.SqlQuery(typeof(ShortCar), "Select CarId, Make from Inventory"))
+                {
+                    WriteLine(c);
+                }
+
+            }
+
         }
     }
 }
