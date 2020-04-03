@@ -217,6 +217,7 @@ namespace AutoLotConsoleApp
                 context.SaveChanges();
             }
         }
+        // Entity state is a more performant, but less secure way to change objects (since it doesn't involve a separate db call to ensure the object to be modified exists.
         private static void RemoveRecordsUsingEntityState(int carId)
         {
             using (var context = new AutoLotEntities())
@@ -230,6 +231,22 @@ namespace AutoLotConsoleApp
                 catch (DbUpdateConcurrencyException ex)
                 {
                     WriteLine(ex);
+                }
+            }
+        }
+        private static void UpdateRecord(int carId)
+        {
+            // Find a car to delete by primary key.
+            using (var context = new AutoLotEntities())
+            {
+                // Grab the car, change it, save.
+                Car carToUpdate = context.Cars.Find(carId);
+                if (carToUpdate != null)
+                {
+                    WriteLine(context.Entry(carToUpdate).State);
+                    carToUpdate.Color = "Blue";
+                    WriteLine(context.Entry(carToUpdate).State);
+                    context.SaveChanges();
                 }
             }
         }
