@@ -3,6 +3,7 @@ using AutoLotConsoleApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -206,9 +207,31 @@ namespace AutoLotConsoleApp
                     }
                     context.SaveChanges();
                 }
+            }
+        }
+        private static void RemoveMultipleRecords(IEnumerable<Car> carsToRemove)
+        {
+            using (var context = new AutoLotEntities())
+            {
+                context.Cars.RemoveRange(carsToRemove);
+                context.SaveChanges();
+            }
+        }
+        private static void RemoveRecordsUsingEntityState(int carId)
+        {
+            using (var context = new AutoLotEntities())
+            {
+                Car carToDelete = new Car() { CarId = carId };
+                context.Entry(carToDelete).State = EntityState.Deleted;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    WriteLine(ex);
                 }
             }
         }
-
     }
 }
