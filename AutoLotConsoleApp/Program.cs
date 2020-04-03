@@ -190,7 +190,25 @@ namespace AutoLotConsoleApp
                 }
             }
         }
-
+        private static void RemoveRecord(int carId)
+        {
+            // Find a car to delte by primary key
+            using (var context = new AutoLotEntities())
+            {
+                Car carToDelete = context.Cars.Find(carId);
+                if (carToDelete != null)
+                {
+                    context.Cars.Remove(carToDelete);
+                    // This code is purely demonstrative to show the entity state changed to Deleted
+                    if (context.Entry(carToDelete).State != EntityState.Deleted)
+                    {
+                        throw new Exception("Unable to delete the record");
+                    }
+                    context.SaveChanges();
+                }
+                }
+            }
+        }
 
     }
 }
